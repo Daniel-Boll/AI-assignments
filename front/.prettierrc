@@ -1,0 +1,8 @@
+{
+  "importOrder": ["^react$", "<THIRD_PARTY_MODULES>", "^@styles/", "^@lib/", "^[.]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "printWidth": 120,
+  "singleQuote": false,
+  "trailingComma": "all"
+}

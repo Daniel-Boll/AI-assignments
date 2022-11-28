@@ -1,0 +1,14 @@
+{
+  "method": "generate_and_test",
+  "board": [
+    { "content": "5" },
+    { "content": "2" },
+    { "content": "6" },
+    { "content": "1" },
+    { "content": "" },
+    { "content": "3" },
+    { "content": "4" },
+    { "content": "8" },
+    { "content": "7" }
+  ]
+}
