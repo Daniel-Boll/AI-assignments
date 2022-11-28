@@ -7,7 +7,7 @@ pub mod routes_utils {
   use derive_more::{Display, Error};
   use serde::{Deserialize, Serialize};
 
-  #[derive(Serialize, Deserialize, Clone)]
+  #[derive(Serialize, Deserialize, Clone, Debug)]
   pub struct Tile {
     pub content: String,
   }
