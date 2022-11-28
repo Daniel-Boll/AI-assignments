@@ -1,5 +1,5 @@
 use actix_web::{
-  get, http::StatusCode, middleware::Logger, App, HttpResponse, HttpServer, Responder,
+  get, http::StatusCode, middleware::Logger, App, HttpResponse, HttpServer, Responder
 };
 use env_logger::Env;
 

@@ -1,7 +1,7 @@
 pub mod generate_and_test {
     use rand::Rng;
 
-    use crate::tiles::routes_utils::routes_utils::Tile;
+    use crate::tiles::routes_utils::routes_utils::{SolveResult, Tile};
 
     /// This solver consist in three steps:
     ///   - Generate a possible solution. For some problems, this means generating a particular
@@ -14,45 +14,35 @@ pub mod generate_and_test {
     /// as long as the neighbor is empty. The goal state is the solved puzzle.
     ///
     /// The heuristic used is the sum of the Manhattan distances of each tile from its goal position.
-    pub fn solver(board: [Tile; 9]) -> [Tile; 9] {
+    pub fn solver(board: [Tile; 9]) -> SolveResult {
         let mut board = board;
+        let mut solution_steps: Vec<[Tile; 9]> = vec![];
 
-        for i in 0..9 {
-            print!("{} ", board[i].content);
-            if board[i].content.len() == 0 {
-                print!(" ");
-            }
-            if i % 3 == 2 {
+        // Board print closure
+        let board_print = |board: [Tile; 9]| {
+            for i in 0..3 {
+                for j in 0..3 {
+                    print!("{} ", board[i * 3 + j].content);
+                    if board[i * 3 + j].content == "" {
+                        print!(" ");
+                    }
+                }
                 println!();
             }
-        }
-        println!("");
+            println!("");
+        };
 
         while !is_board_correct(board.clone()) {
             let moves = generate(board.clone());
-            let a = &moves;
-
-            // Print every vector as a 3x3 grid of tiles
-            a.into_iter().for_each(|move_| {
-                for i in 0..9 {
-                    print!("{} ", move_[i].content);
-                    if move_[i].content.len() == 0 {
-                        print!(" ");
-                    }
-                    if i % 3 == 2 {
-                        println!();
-                    }
-                }
-                println!("");
-            });
 
             // Board will assume a random value from the moves vector
             let random_in_range_of_moves =
                 rand::thread_rng().gen_range(0..generate(board.clone()).len());
             board = moves[random_in_range_of_moves].clone();
+            solution_steps.push(board.clone());
         }
 
-        board
+        SolveResult { solution_steps }
     }
 
     /// Generate all possible solutions for the current state
@@ -120,7 +110,7 @@ pub mod generate_and_test {
 
     fn is_board_correct(board: [Tile; 9]) -> bool {
         let mut correct = true;
-        for i in 1..=8 {
+        for i in 0..=7 {
             if board[i].content != String::from((i + 1).to_string()) {
                 correct = false;
             }

@@ -4,11 +4,11 @@ pub mod tile_router {
   use crate::tiles::{
     generate_and_test::*,
     hill_climbing::*,
-    routes_utils::routes_utils::{SolveErrors, SolveInfo, SolveResult},
+    routes_utils::routes_utils::{SolveErrors, SolveInfo},
   };
   #[post("/solve")]
   async fn solve(info: web::Json<SolveInfo>) -> Result<impl Responder, SolveErrors> {
-    let res = match info.method.as_str() {
+    let result = match info.method.as_str() {
       "generate_and_test" => Ok(generate_and_test::solver(info.board.clone())),
       "hill_climbing" => Ok(hill_climbing::solver(info.board.clone())),
       _ => Err(SolveErrors::MethodNotSupported {
@@ -16,21 +16,18 @@ pub mod tile_router {
       }),
     };
 
-    if res.is_err() {
-      return Err(res.err().unwrap());
+    if result.is_err() {
+      return Err(result.err().unwrap());
     }
 
-    let result = SolveResult {
-      board: res.unwrap(),
-    };
-
-    Ok(HttpResponse::Ok().json(result))
+    Ok(HttpResponse::Ok().json(result.unwrap()))
   }
 
   #[get("")]
   async fn index() -> impl Responder {
     HttpResponse::Ok().body("Hello from tiles!")
   }
+
   pub fn router() -> actix_web::Scope {
     web::scope("tiles").service(index).service(solve)
   }
