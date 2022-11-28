@@ -120,7 +120,7 @@ pub mod generate_and_test {
 
     fn is_board_correct(board: [Tile; 9]) -> bool {
         let mut correct = true;
-        for i in 0..=8 {
+        for i in 1..=8 {
             if board[i].content != String::from((i + 1).to_string()) {
                 correct = false;
             }
