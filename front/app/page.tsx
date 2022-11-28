@@ -21,7 +21,14 @@ const Board: FC<BoardProps> = ({ name }) => {
     { content: '' },
   ]);
 
-  const solve = () => {
+  const solve = async () => {
+    const request = await fetch('localhost:8080/tiles/solve', {
+      method: 'POST',
+      body: JSON.stringify(tiles),
+    });
+    const result = await request.json();
+
+    console.log(result);
   };
 
   const handleShuffle = () => {
@@ -44,7 +51,9 @@ const Board: FC<BoardProps> = ({ name }) => {
         ))}
       </div>
       <div className="btn-group">
-        <button className="btn btn-primary w-1/2">Solve</button>
+        <button className="btn btn-primary w-1/2" onClick={solve}>
+          Solve
+        </button>
         <button className="btn w-1/2" onClick={handleShuffle}>
           Shuffle
         </button>
