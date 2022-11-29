@@ -1,5 +1,5 @@
-// import { Board } from '../lib/TileGame';
 'use client';
+
 import { shuffle } from '@lib/utils/array';
 import React, { FC, useState } from 'react';
 
@@ -21,14 +21,46 @@ const Board: FC<BoardProps> = ({ name }) => {
     { content: '' },
   ]);
 
-  const solve = async () => {
-    const request = await fetch('localhost:8080/tiles/solve', {
-      method: 'POST',
-      body: JSON.stringify(tiles),
-    });
-    const result = await request.json();
+  const solve = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
 
-    console.log(result);
+    const ngrokUrl =
+      'https://1aef-2804-d55-4607-d500-acfb-5774-4e76-def.sa.ngrok.io';
+
+    const request = await fetch(
+      // 'http://localhost:8080/tiles/solve',
+      `${ngrokUrl}/tiles/solve`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          method: 'generate_and_test',
+          board: [
+            { content: '1' },
+            { content: '2' },
+            { content: '3' },
+            { content: '4' },
+            { content: '5' },
+            { content: '6' },
+            { content: '7' },
+            { content: '8' },
+            { content: '' },
+          ],
+        }),
+      },
+    );
+
+    console.log(request);
+
+    // Recommendation: handle errors
+    // if (!request.ok) {
+    //   throw new Error('Failed to fetch data');
+    // }
+
+    if (request.ok) {
+      const result = await request.json();
+
+      console.log(result);
+    }
   };
 
   const handleShuffle = () => {
