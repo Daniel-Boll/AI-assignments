@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[actix_web::test]
-    async fn test_solve() {
+    async fn test_solve_by_generate_and_test_basic() {
         let app = test::init_service(App::new().service(web::scope("tiles").service(solve))).await;
         let payload = r#"{
       "method": "generate_and_test",
@@ -80,6 +80,37 @@ mod tests {
         { "content": "6" },
         { "content": "7" },
         { "content": "8" },
+        { "content": "" }
+      ]
+    }"#;
+
+        let json_payload = serde_json::from_str::<SolveInfo>(payload).unwrap();
+
+        assert_eq!(json_payload.board.len(), 9);
+
+        let req = test::TestRequest::post()
+            .uri("/tiles/solve")
+            .set_json(&json_payload)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        assert!(resp.response().status().is_success());
+    }
+
+    #[actix_web::test]
+    async fn test_solve_by_generate_and_test_one_movement() {
+        let app = test::init_service(App::new().service(web::scope("tiles").service(solve))).await;
+        let payload = r#"{
+      "method": "generate_and_test",
+      "board": [
+        { "content": "1" },
+        { "content": "2" },
+        { "content": "3" },
+        { "content": "4" },
+        { "content": "5" },
+        { "content": "6" },
+        { "content": "8" },
+        { "content": "7" },
         { "content": "" }
       ]
     }"#;
