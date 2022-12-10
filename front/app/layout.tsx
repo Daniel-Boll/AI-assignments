@@ -17,12 +17,12 @@ export default function RootLayout({
       <head>
         <title>AI Assignments</title>
       </head>
-      <body className="w-screen h-screen">
+      <body className="max-w-screen min-h-screen overflow-auto">
         {/* The content here is separate so I can apply the padding and gap for both the Header and the main content but no the Footer */}
-        <div className="p-2 grid gap-2">
+        <div className="box-border p-2 flex flex-col h-full gap-2">
           <Header />
 
-          <main>{children}</main>
+          <main className="w-full max-w-full h-full">{children}</main>
         </div>
 
         <Footer />
