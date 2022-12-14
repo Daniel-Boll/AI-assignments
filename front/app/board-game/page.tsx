@@ -8,7 +8,7 @@ export default function BoardGame() {
       <div className="flex w-full justify-center">
         <Board name="Generate and test" solutionMethod='generate_and_test' />
         <div className="divider divider-horizontal">OR</div>
-        <Board name="Hill climbing" solutionMethod='hill_climb' />
+        <Board name="Hill climbing" solutionMethod='hill_climbing' />
       </div>
     </div>
   );

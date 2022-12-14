@@ -12,6 +12,30 @@ pub mod routes_utils {
         pub content: String,
     }
 
+    impl Tile {
+        pub fn new(content: String) -> Self {
+            Tile { content }
+        }
+
+        pub fn is_empty(&self) -> bool {
+            self.content == ""
+        }
+
+        pub fn goal_position(&self) -> usize {
+            match self.content.as_str() {
+                "1" => 0,
+                "2" => 1,
+                "3" => 2,
+                "4" => 3,
+                "5" => 4,
+                "6" => 5,
+                "7" => 6,
+                "8" => 7,
+                _ => 8,
+            }
+        }
+    }
+
     #[derive(Serialize, Deserialize)]
     pub struct SolveInfo {
         pub board: [Tile; 9],

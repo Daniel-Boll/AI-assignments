@@ -9,7 +9,7 @@ interface Tile {
 
 interface BoardProps {
   name: string;
-  solutionMethod: 'generate_and_test' | 'hill_climb';
+  solutionMethod: 'generate_and_test' | 'hill_climbing';
 }
 
 export const Board: FC<BoardProps> = ({ name, solutionMethod }) => {
