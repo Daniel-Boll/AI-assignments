@@ -5,7 +5,7 @@ pub mod hill_climbing {
     };
 
     const MAX_ITERATIONS: i32 = 5_000;
-    const RANDOM_MOVES: i32 = 2;
+    // const RANDOM_MOVES: i32 = 2;
 
     pub fn solver(board: [Tile; 9]) -> SolveResult {
         let mut board = board;
@@ -13,7 +13,7 @@ pub mod hill_climbing {
         let mut iterations = 0;
         // Store the last 4 boards to avoid infinite loops
         let mut last_boards: Vec<[Tile; 9]> = vec![];
-        let mut returns = 0;
+        // let mut returns = 0;
 
         let board_print = |board: [Tile; 9]| {
             for i in 0..3 {
@@ -34,15 +34,15 @@ pub mod hill_climbing {
             // For each move calculate the heuristic if the move is better than the current one then
             // apply it
             let mut best_move = moves[0].clone();
-            let mut best_move_cost = heuristic(moves[0].clone());
+            let best_move_cost = heuristic(moves[0].clone());
 
             for move_ in &moves {
                 let move_cost = heuristic(move_.clone());
 
                 if move_cost < best_move_cost {
                     best_move = move_.clone();
-                    best_move_cost = move_cost;
-                    // break;
+                    // best_move_cost = move_cost;
+                    break;
                 }
             }
 
@@ -57,14 +57,28 @@ pub mod hill_climbing {
             }
 
             if similar_boards > 5 {
-                returns = RANDOM_MOVES;
+                // println!("===========================================");
+                let position1 = rand::random::<usize>() % &board.len();
+                let position2 = rand::random::<usize>() % &board.len();
+
+                best_move = board.clone();
+
+                // board_print(best_move.clone());
+                // println!("Swaping positions {} and {}\n", position1, position2);
+
+                best_move.swap(position1, position2);
+
+                // board_print(best_move.clone());
+
+                // println!("===========================================");
             }
 
-            if returns > 0 {
-                let random_move = rand::random::<usize>() % &moves.len();
-                best_move = moves[random_move].clone();
-                returns -= 1;
-            }
+            // for this approach, 'returns' is never changed, this code is never executed
+            // if returns > 0 {
+            //     let random_move = rand::random::<usize>() % &moves.len();
+            //     best_move = moves[random_move].clone();
+            //     returns -= 1;
+            // }
 
             // Sanitize the last boards
             if last_boards.len() > 10 {
@@ -75,10 +89,7 @@ pub mod hill_climbing {
             solution_steps.push(board.clone());
             last_boards.push(board.clone());
 
-            println!(
-                "Current cost {}; Random choices: {}\n",
-                best_move_cost, returns
-            );
+            println!("Current cost {}\n", best_move_cost);
             board_print(board.clone());
             iterations += 1;
         }
